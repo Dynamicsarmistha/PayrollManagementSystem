@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header">
+            <h3>Employee Profile</h3>
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+                    <strong>Employee ID:</strong>
+                    <p>{{ employee.employee_id }}</p>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <strong>Name:</strong>
+                    <p>{{ employee.name }}</p>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <strong>Email:</strong>
+                    <p>{{ employee.email }}</p>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <strong>Phone:</strong>
+                    <p>{{ employee.phone }}</p>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <strong>Department:</strong>
+                    <p>{{ employee.department }}</p>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <strong>Designation:</strong>
+                    <p>{{ employee.designation }}</p>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <strong>Joining Date:</strong>
+                    <p>{{ employee.joining_date }}</p>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <strong>Basic Salary:</strong>
+                    <p>₹{{ employee.basic_salary }}</p>
+                </div>
+
+            </div>
+
+            <a
+                href="{% url 'employee_list' %}"
+                class="btn btn-secondary"
+            >
+                Back
+            </a>
+
+            <a
+                href="{% url 'employee_edit' employee.id %}"
+                class="btn btn-warning"
+            >
+                Edit Employee
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,176 @@
+{% extends 'base.html' %} {% block content %}
+
+<style>
+  .attendance-form-container {
+    max-width: 650px;
+    margin: 35px auto;
+    padding: 0 20px;
+  }
+
+  .attendance-form-card {
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 14px;
+    padding: 30px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
+  }
+
+  .attendance-form-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #263238;
+    margin-bottom: 28px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-group label {
+    display: block;
+    font-weight: 600;
+    color: #37474f;
+    margin-bottom: 7px;
+  }
+
+  .form-control,
+  .form-select {
+    width: 100%;
+    min-height: 42px;
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    font-size: 15px;
+    box-sizing: border-box;
+  }
+
+  .form-control:focus,
+  .form-select:focus {
+    border-color: #607d8b;
+    box-shadow: 0 0 0 3px rgba(96, 125, 139, 0.12);
+    outline: none;
+  }
+
+  .error-message {
+    color: #dc3545;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+
+  .form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 25px;
+  }
+
+  .save-btn {
+    background: #37474f;
+    border: 1px solid #37474f;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .save-btn:hover {
+    background: #263238;
+    border-color: #263238;
+    color: white;
+  }
+
+  .cancel-btn {
+    background: #eceff1;
+    border: 1px solid #cfd8dc;
+    color: #37474f;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .cancel-btn:hover {
+    background: #cfd8dc;
+    color: #263238;
+  }
+
+  @media (max-width: 768px) {
+    .attendance-form-container {
+      margin: 20px auto;
+      padding: 0 12px;
+    }
+
+    .attendance-form-card {
+      padding: 22px;
+    }
+
+    .attendance-form-title {
+      font-size: 24px;
+    }
+
+    .form-actions {
+      flex-direction: column;
+    }
+
+    .save-btn,
+    .cancel-btn {
+      text-align: center;
+    }
+  }
+</style>
+
+<div class="attendance-form-container">
+  <div class="attendance-form-card">
+    <h2 class="attendance-form-title">{{ title }}</h2>
+
+    <form method="post">
+      {% csrf_token %}
+
+      <!-- Employee -->
+      <div class="form-group">
+        <label for="{{ form.employee.id_for_label }}"> Employee </label>
+
+        {{ form.employee }} {% if form.employee.errors %}
+        <div class="error-message">{{ form.employee.errors }}</div>
+        {% endif %}
+      </div>
+
+      <!-- Date -->
+      <div class="form-group">
+        <label for="{{ form.date.id_for_label }}"> Date </label>
+
+        {{ form.date }} {% if form.date.errors %}
+        <div class="error-message">{{ form.date.errors }}</div>
+        {% endif %}
+      </div>
+
+      <!-- Status -->
+      <div class="form-group">
+        <label for="{{ form.status.id_for_label }}"> Status </label>
+
+        {{ form.status }} {% if form.status.errors %}
+        <div class="error-message">{{ form.status.errors }}</div>
+        {% endif %}
+      </div>
+
+      <!-- Remarks -->
+      <div class="form-group">
+        <label for="{{ form.remarks.id_for_label }}"> Remarks </label>
+
+        {{ form.remarks }} {% if form.remarks.errors %}
+        <div class="error-message">{{ form.remarks.errors }}</div>
+        {% endif %}
+      </div>
+
+      <!-- Buttons -->
+      <div class="form-actions">
+        <button type="submit" class="save-btn">Save Attendance</button>
+
+        <a href="{% url 'attendance_list' %}" class="cancel-btn"> Cancel </a>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

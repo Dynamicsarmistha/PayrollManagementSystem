@@ -1,0 +1,148 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Payroll Management System
+    </title>
+
+    <link
+    rel="stylesheet"
+    href="{% static 'css/style.css' %}"
+>
+
+<style>
+
+    .navbar {
+        background: #0d6efd;
+        color: white;
+        min-height: 64px;
+        padding: 0 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .logo {
+        font-size: 22px;
+        font-weight: 700;
+        color: white;
+    }
+
+    .navbar nav {
+        display: flex;
+        align-items: center;
+        gap: 25px;
+    }
+
+    .navbar nav a {
+        color: white;
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    .navbar nav a:hover {
+        text-decoration: underline;
+    }
+
+</style>
+
+<link
+    rel="stylesheet"
+    href="{% static 'css/style.css' %}"
+>
+
+<style>
+
+    .navbar {
+        background: #0d6efd;
+        color: white;
+        min-height: 64px;
+        padding: 0 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .logo {
+        font-size: 22px;
+        font-weight: 700;
+        color: white;
+    }
+
+    .navbar nav {
+        display: flex;
+        align-items: center;
+        gap: 25px;
+    }
+
+    .navbar nav a {
+        color: white;
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    .navbar nav a:hover {
+        text-decoration: underline;
+    }
+
+</style>
+
+</head>
+    
+
+</head>
+
+
+<body>
+
+
+<header class="navbar">
+
+    <div class="logo">
+        Payroll Management System
+    </div>
+
+    <nav>
+
+        <a href="/">
+            Dashboard
+        </a>
+
+        <a href="/admin/">
+            Admin
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main class="container">
+
+    {% block content %}
+
+    {% endblock %}
+
+</main>
+
+
+<script src="{% static 'js/script.js' %}">
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,326 @@
+{% extends 'base.html' %} {% block content %}
+
+<style>
+  .salary-slip-container {
+    max-width: 850px;
+    margin: 35px auto;
+    padding: 0 20px;
+  }
+
+  .salary-slip-card {
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 14px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
+    overflow: hidden;
+  }
+
+  /* Header */
+  .salary-slip-header {
+    background: #37474f;
+    color: #ffffff;
+    text-align: center;
+    padding: 25px;
+  }
+
+  .salary-slip-header h2 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+  }
+
+  .salary-slip-header p {
+    margin: 6px 0 0;
+    font-size: 15px;
+    color: #eceff1;
+  }
+
+  /* Employee Information */
+  .employee-info {
+    padding: 25px 30px 10px;
+  }
+
+  .info-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #263238;
+    margin-bottom: 18px;
+  }
+
+  .info-item {
+    margin-bottom: 12px;
+    color: #495057;
+  }
+
+  .info-label {
+    font-weight: 600;
+    color: #37474f;
+  }
+
+  /* Salary Table */
+  .salary-table-container {
+    padding: 10px 30px 25px;
+    overflow-x: auto;
+  }
+
+  .salary-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  .salary-table th {
+    background: #37474f;
+    color: #ffffff;
+    padding: 14px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: left;
+  }
+
+  .salary-table th:first-child {
+    border-top-left-radius: 8px;
+  }
+
+  .salary-table th:last-child {
+    border-top-right-radius: 8px;
+  }
+
+  .salary-table td {
+    padding: 14px;
+    border-bottom: 1px solid #eeeeee;
+    color: #495057;
+  }
+
+  .salary-table tbody tr:hover {
+    background: #f8f9fa;
+  }
+
+  .amount {
+    text-align: right;
+    font-weight: 600;
+    white-space: nowrap;
+    color: #37474f;
+  }
+
+  .net-row {
+    background: #f5f7f8;
+  }
+
+  .net-row td {
+    font-weight: 700;
+    color: #263238;
+    border-bottom: none;
+  }
+
+  .net-amount {
+    font-size: 17px;
+    color: #263238 !important;
+  }
+
+  /* Buttons */
+  .salary-slip-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 0 30px 30px;
+  }
+
+  .print-btn,
+  .back-btn {
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .print-btn {
+    background: #37474f;
+    border: 1px solid #37474f;
+    color: #ffffff;
+  }
+
+  .print-btn:hover {
+    background: #263238;
+    border-color: #263238;
+    color: #ffffff;
+  }
+
+  .back-btn {
+    background: #eceff1;
+    border: 1px solid #cfd8dc;
+    color: #37474f;
+  }
+
+  .back-btn:hover {
+    background: #cfd8dc;
+    color: #263238;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .salary-slip-container {
+      margin: 20px auto;
+      padding: 0 12px;
+    }
+
+    .salary-slip-header {
+      padding: 22px;
+    }
+
+    .salary-slip-header h2 {
+      font-size: 24px;
+    }
+
+    .employee-info,
+    .salary-table-container {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
+    .salary-slip-actions {
+      flex-direction: column;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
+    .print-btn,
+    .back-btn {
+      text-align: center;
+      width: 100%;
+    }
+  }
+
+  /* Print */
+  @media print {
+    body {
+      background: #ffffff !important;
+    }
+
+    .salary-slip-container {
+      max-width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    .salary-slip-card {
+      border: none;
+      box-shadow: none;
+    }
+
+    .salary-slip-actions {
+      display: none !important;
+    }
+
+    .salary-slip-header {
+      background: #37474f !important;
+      color: #ffffff !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .salary-table th {
+      background: #37474f !important;
+      color: #ffffff !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+</style>
+
+<div class="salary-slip-container">
+  <div class="salary-slip-card">
+    <!-- Header -->
+    <div class="salary-slip-header">
+      <h2>Salary Slip</h2>
+
+      <p>{{ payroll.month|date:"F Y" }}</p>
+    </div>
+
+    <!-- Employee Information -->
+    <div class="employee-info">
+      <div class="info-title">Employee Information</div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="info-item">
+            <span class="info-label"> Employee: </span>
+
+            {{ payroll.employee.name }}
+          </div>
+
+          <div class="info-item">
+            <span class="info-label"> Employee ID: </span>
+
+            {{ payroll.employee.employee_id }}
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="info-item">
+            <span class="info-label"> Department: </span>
+
+            {{ payroll.employee.department }}
+          </div>
+
+          <div class="info-item">
+            <span class="info-label"> Payroll Month: </span>
+
+            {{ payroll.month|date:"F Y" }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Salary Details -->
+    <div class="salary-table-container">
+      <table class="salary-table">
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th class="amount">Amount</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>Basic Salary</td>
+
+            <td class="amount">₹{{ payroll.basic_salary }}</td>
+          </tr>
+
+          <tr>
+            <td>Allowances</td>
+
+            <td class="amount">₹{{ payroll.allowances }}</td>
+          </tr>
+
+          <tr>
+            <td>Deductions</td>
+
+            <td class="amount">₹{{ payroll.deductions }}</td>
+          </tr>
+
+          <tr class="net-row">
+            <td>Net Salary</td>
+
+            <td class="amount net-amount">₹{{ payroll.net_salary }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Actions -->
+    <div class="salary-slip-actions">
+      <button type="button" onclick="window.print()" class="print-btn">
+        Print Salary Slip
+      </button>
+
+      <a href="{% url 'payroll_list' %}" class="back-btn"> Back to Payroll </a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

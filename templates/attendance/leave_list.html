@@ -1,0 +1,260 @@
+{% extends 'base.html' %} {% block content %}
+
+<style>
+  .leave-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px;
+  }
+
+  /* Header */
+  .leave-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+  }
+
+  .leave-header h2 {
+    font-size: 30px;
+    font-weight: 700;
+    margin: 0;
+    color: #263238;
+  }
+
+  .add-leave-btn {
+    background: #37474f;
+    border: 1px solid #37474f;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .add-leave-btn:hover {
+    background: #263238;
+    border-color: #263238;
+    color: white;
+  }
+
+  /* Table Card */
+  .leave-table-card {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 20px;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+    overflow-x: auto;
+  }
+
+  /* Table */
+  .leave-table {
+    width: 100%;
+    margin-bottom: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+  }
+
+  .leave-table thead th {
+    background: #37474f;
+    color: white;
+    padding: 14px 12px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .leave-table thead th:first-child {
+    border-top-left-radius: 8px;
+  }
+
+  .leave-table thead th:last-child {
+    border-top-right-radius: 8px;
+  }
+
+  .leave-table tbody td {
+    padding: 14px 12px;
+    vertical-align: middle;
+    text-align: left;
+    border-bottom: 1px solid #eeeeee;
+    word-wrap: break-word;
+  }
+
+  .leave-table tbody tr {
+    transition: background-color 0.2s ease;
+  }
+
+  .leave-table tbody tr:hover {
+    background-color: #f8f9fa;
+  }
+
+  /* Employee */
+  .employee-name {
+    font-weight: 600;
+    color: #263238;
+  }
+
+  /* Status Badges */
+  .leave-status {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .status-pending {
+    background: #fff3cd;
+    color: #856404;
+  }
+
+  .status-approved {
+    background: #d1e7dd;
+    color: #0f5132;
+  }
+
+  .status-rejected {
+    background: #f8d7da;
+    color: #842029;
+  }
+
+  /* Column Widths */
+  .leave-table th:nth-child(1),
+  .leave-table td:nth-child(1) {
+    width: 17%;
+  }
+
+  .leave-table th:nth-child(2),
+  .leave-table td:nth-child(2) {
+    width: 17%;
+  }
+
+  .leave-table th:nth-child(3),
+  .leave-table td:nth-child(3) {
+    width: 13%;
+  }
+
+  .leave-table th:nth-child(4),
+  .leave-table td:nth-child(4) {
+    width: 13%;
+  }
+
+  .leave-table th:nth-child(5),
+  .leave-table td:nth-child(5) {
+    width: 25%;
+  }
+
+  .leave-table th:nth-child(6),
+  .leave-table td:nth-child(6) {
+    width: 15%;
+  }
+
+  /* Empty State */
+  .empty-row {
+    padding: 30px !important;
+    color: #6c757d;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .leave-container {
+      padding: 20px 12px;
+    }
+
+    .leave-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 15px;
+    }
+
+    .leave-header h2 {
+      font-size: 25px;
+    }
+
+    .leave-table-card {
+      padding: 12px;
+    }
+
+    .leave-table {
+      min-width: 850px;
+    }
+  }
+</style>
+
+<div class="leave-container">
+  <!-- Header -->
+  <div class="leave-header">
+    <h2>Leave Management</h2>
+
+    <a href="{% url 'leave_add' %}" class="add-leave-btn"> + Add Leave </a>
+  </div>
+
+  <!-- Leave Table -->
+  <div class="leave-table-card">
+    <div class="table-responsive">
+      <table class="leave-table">
+        <thead>
+          <tr>
+            <th>Employee</th>
+            <th>Leave Type</th>
+            <th>From Date</th>
+            <th>To Date</th>
+            <th>Reason</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for leave in leaves %}
+
+          <tr>
+            <td class="employee-name">{{ leave.employee.name }}</td>
+
+            <td>{{ leave.leave_type }}</td>
+
+            <td>{{ leave.from_date }}</td>
+
+            <td>{{ leave.to_date }}</td>
+
+            <td>{{ leave.reason }}</td>
+
+            <td>
+              {% if leave.status == "Pending" %}
+
+              <span class="leave-status status-pending"> Pending </span>
+
+              {% elif leave.status == "Approved" %}
+
+              <span class="leave-status status-approved"> Approved </span>
+
+              {% elif leave.status == "Rejected" %}
+
+              <span class="leave-status status-rejected"> Rejected </span>
+
+              {% else %}
+
+              <span class="leave-status"> {{ leave.status }} </span>
+
+              {% endif %}
+            </td>
+          </tr>
+
+          {% empty %}
+
+          <tr>
+            <td colspan="6" class="text-center empty-row">
+              No leave records found.
+            </td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,332 @@
+{% extends 'base.html' %} {% block content %}
+
+<style>
+  .employee-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px;
+  }
+
+  .employee-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+  }
+
+  .employee-header h2 {
+    font-size: 30px;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .add-employee-btn {
+    text-decoration: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    background: #37474f;
+    border: 1px solid #37474f;
+    color: white;
+}
+
+.add-employee-btn:hover {
+    background: #263238;
+    border-color: #263238;
+    color: white;
+}
+
+ .search-box {
+    background: #ffffff;
+    padding: 24px;
+    border-radius: 14px;
+    margin-bottom: 25px;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+.search-box .row {
+    row-gap: 15px;
+}
+
+.search-box .form-label {
+    font-weight: 600;
+    color: #37474f;
+    margin-bottom: 7px;
+}
+
+.search-box .form-control,
+.search-box .form-select {
+    min-height: 42px;
+    border-radius: 8px;
+}
+
+.search-box .btn {
+    min-height: 42px;
+    margin-right: 8px;
+    white-space: nowrap;
+    border-radius: 8px;
+}
+
+ .employee-table-card {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 20px;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+    overflow-x: auto;
+}
+
+  .employee-table {
+    width: 100%;
+    margin-bottom: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+ .employee-table thead th {
+    background: #37474f;
+    color: white;
+    padding: 14px 12px;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+  .employee-table tbody td {
+    padding: 14px 12px;
+    vertical-align: middle;
+    border-bottom: 1px solid #eeeeee;
+  }
+
+  .employee-table tbody tr {
+    transition: background-color 0.2s ease;
+  }
+
+  .employee-table tbody tr:hover {
+    background-color: #f8f9fa;
+  }
+
+  .employee-id {
+    font-weight: 600;
+  }
+
+  .employee-name {
+    font-weight: 600;
+  }
+
+  .salary {
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .action-buttons {
+    white-space: nowrap;
+  }
+
+  .action-buttons .btn {
+    margin-right: 4px;
+    margin-bottom: 4px;
+  }
+
+  .empty-row {
+    padding: 30px !important;
+    color: #6c757d;
+  }
+
+  @media (max-width: 768px) {
+    .employee-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 15px;
+    }
+
+    .employee-header h2 {
+      font-size: 25px;
+    }
+
+    .employee-table-card {
+      padding: 12px;
+    }
+  }
+</style>
+
+<div class="employee-container">
+  <!-- Header -->
+  <div class="employee-header">
+    <h2>Employee Management</h2>
+
+    <a href="{% url 'employee_add' %}" class="btn btn-primary add-employee-btn">
+      + Add Employee
+    </a>
+  </div>
+
+  <!-- Search -->
+  <!-- Search and Filter -->
+<div class="search-box">
+
+  <form method="get">
+
+    <div class="row g-3 align-items-end">
+
+      <!-- Search Employee -->
+<div class="col-md-4">
+
+  <label for="search" class="form-label">
+    Search Employee
+  </label>
+
+  <select name="search" id="search" class="form-select">
+
+    <option value="">All Employees</option>
+
+    {% for employee in employee_options %}
+      <option
+        value="{{ employee.employee_id }}"
+        {% if search == employee.employee_id %}
+          selected
+        {% endif %}
+      >
+        {{ employee.employee_id }} - {{ employee.name }}
+      </option>
+    {% endfor %}
+
+  </select>
+
+</div>
+
+     
+
+      <!-- Department -->
+      <div class="col-md-3">
+
+        <label for="department" class="form-label">
+          Department
+        </label>
+
+        <select
+          name="department"
+          id="department"
+          class="form-select"
+        >
+
+          <option value="">
+            All Departments
+          </option>
+
+          {% for department in departments %}
+
+          <option
+            value="{{ department.id }}"
+            {% if selected_department == department.id|stringformat:"s" %}
+              selected
+            {% endif %}
+          >
+            {{ department.name }}
+          </option>
+
+          {% endfor %}
+
+        </select>
+
+      </div>
+
+      
+
+      <!-- Buttons -->
+      <div class="col-md-3">
+
+        <button
+          type="submit"
+          class="btn btn-dark"
+        >
+          Search / Filter
+        </button>
+
+        <a
+          href="{% url 'employee_list' %}"
+          class="btn btn-secondary"
+        >
+          Reset
+        </a>
+
+      </div>
+
+    </div>
+
+  </form>
+
+</div>
+
+  <!-- Employee Table -->
+  <div class="employee-table-card">
+    <div class="table-responsive">
+      <table class="employee-table">
+        <thead>
+          <tr>
+            <th>Employee ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Department</th>
+            <th>Designation</th>
+            <th>Salary</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for employee in employees %}
+
+          <tr>
+            <td class="employee-id">{{ employee.employee_id }}</td>
+
+            <td class="employee-name">{{ employee.name }}</td>
+
+            <td>{{ employee.email }}</td>
+
+            <td>{{ employee.department }}</td>
+
+            <td>{{ employee.designation }}</td>
+
+            <td class="salary">₹{{ employee.basic_salary }}</td>
+
+            <td class="action-buttons">
+              <a
+                href="{% url 'employee_detail' employee.id %}"
+                class="btn btn-sm btn-info"
+              >
+                View
+              </a>
+
+              <a
+                href="{% url 'employee_edit' employee.id %}"
+                class="btn btn-sm btn-warning"
+              >
+                Edit
+              </a>
+
+              <a
+                href="{% url 'employee_delete' employee.id %}"
+                class="btn btn-sm btn-danger"
+              >
+                Delete
+              </a>
+            </td>
+          </tr>
+
+          {% empty %}
+
+          <tr>
+            <td colspan="7" class="text-center empty-row">
+              No employees found.
+            </td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

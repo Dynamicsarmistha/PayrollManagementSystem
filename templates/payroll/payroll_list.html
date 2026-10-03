@@ -1,0 +1,312 @@
+{% extends 'base.html' %} {% block content %}
+
+<style>
+  .payroll-container {
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: 30px 20px;
+  }
+
+  /* Header */
+  .payroll-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    gap: 20px;
+  }
+
+  .payroll-header h2 {
+    font-size: 30px;
+    font-weight: 700;
+    margin: 0;
+    color: #263238;
+  }
+
+  .payroll-header-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .add-payroll-btn,
+  .report-btn {
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .add-payroll-btn {
+    background: #37474f;
+    border: 1px solid #37474f;
+    color: white;
+  }
+
+  .add-payroll-btn:hover {
+    background: #263238;
+    border-color: #263238;
+    color: white;
+  }
+
+  .report-btn {
+    background: #eceff1;
+    border: 1px solid #cfd8dc;
+    color: #37474f;
+  }
+
+  .report-btn:hover {
+    background: #cfd8dc;
+    color: #263238;
+  }
+
+  /* Table Card */
+  .payroll-table-card {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 20px;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+    overflow-x: auto;
+  }
+
+  /* Table */
+  .payroll-table {
+    width: 100%;
+    margin-bottom: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+  }
+
+  .payroll-table thead th {
+    background: #37474f;
+    color: white;
+    padding: 14px 10px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .payroll-table thead th:first-child {
+    border-top-left-radius: 8px;
+  }
+
+  .payroll-table thead th:last-child {
+    border-top-right-radius: 8px;
+  }
+
+  .payroll-table tbody td {
+    padding: 14px 10px;
+    vertical-align: middle;
+    text-align: left;
+    border-bottom: 1px solid #eeeeee;
+    word-wrap: break-word;
+  }
+
+  .payroll-table tbody tr {
+    transition: background-color 0.2s ease;
+  }
+
+  .payroll-table tbody tr:hover {
+    background-color: #f8f9fa;
+  }
+
+  /* Employee */
+  .employee-name {
+    font-weight: 600;
+    color: #263238;
+  }
+
+  /* Salary */
+  .salary-value {
+    font-weight: 600;
+    white-space: nowrap;
+    color: #37474f;
+  }
+
+  .net-salary {
+    font-weight: 700;
+    white-space: nowrap;
+    color: #263238;
+  }
+
+  /* Actions */
+  .action-buttons {
+    white-space: normal;
+  }
+
+  .action-buttons .btn {
+    margin-right: 4px;
+    margin-bottom: 5px;
+    border-radius: 7px;
+    font-weight: 600;
+  }
+
+  /* Column Widths */
+  .payroll-table th:nth-child(1),
+  .payroll-table td:nth-child(1) {
+    width: 15%;
+  }
+
+  .payroll-table th:nth-child(2),
+  .payroll-table td:nth-child(2) {
+    width: 11%;
+  }
+
+  .payroll-table th:nth-child(3),
+  .payroll-table td:nth-child(3) {
+    width: 12%;
+  }
+
+  .payroll-table th:nth-child(4),
+  .payroll-table td:nth-child(4) {
+    width: 12%;
+  }
+
+  .payroll-table th:nth-child(5),
+  .payroll-table td:nth-child(5) {
+    width: 12%;
+  }
+
+  .payroll-table th:nth-child(6),
+  .payroll-table td:nth-child(6) {
+    width: 12%;
+  }
+
+  .payroll-table th:nth-child(7),
+  .payroll-table td:nth-child(7) {
+    width: 26%;
+  }
+
+  /* Empty State */
+  .empty-row {
+    padding: 30px !important;
+    color: #6c757d;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .payroll-container {
+      padding: 20px 12px;
+    }
+
+    .payroll-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .payroll-header h2 {
+      font-size: 25px;
+    }
+
+    .payroll-header-actions {
+      width: 100%;
+    }
+
+    .payroll-table-card {
+      padding: 12px;
+    }
+
+    .payroll-table {
+      min-width: 1100px;
+    }
+  }
+</style>
+
+<div class="payroll-container">
+  <!-- Header -->
+  <div class="payroll-header">
+    <h2>Payroll Management</h2>
+
+    <div class="payroll-header-actions">
+      <a href="{% url 'payroll_add' %}" class="add-payroll-btn">
+        + Add Payroll
+      </a>
+
+      <a href="{% url 'payroll_report' %}" class="report-btn">
+        Payroll Reports
+      </a>
+    </div>
+  </div>
+
+  <!-- Payroll Table -->
+  <div class="payroll-table-card">
+    <div class="table-responsive">
+      <table class="payroll-table">
+        <thead>
+          <tr>
+            <th>Employee</th>
+            <th>Month</th>
+            <th>Basic Salary</th>
+            <th>Allowances</th>
+            <th>Deductions</th>
+            <th>Net Salary</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for payroll in payrolls %}
+
+          <tr>
+            <td class="employee-name">{{ payroll.employee.name }}</td>
+
+            <td>{{ payroll.month|date:"F Y" }}</td>
+
+            <td class="salary-value">₹{{ payroll.basic_salary }}</td>
+
+            <td class="salary-value">₹{{ payroll.allowances }}</td>
+
+            <td class="salary-value">₹{{ payroll.deductions }}</td>
+
+            <td class="net-salary">₹{{ payroll.net_salary }}</td>
+
+            <td class="action-buttons">
+              <a
+                href="{% url 'payroll_edit' payroll.id %}"
+                class="btn btn-sm btn-warning"
+              >
+                Edit
+              </a>
+
+              <a
+                href="{% url 'salary_slip' payroll.id %}"
+                class="btn btn-sm btn-info"
+              >
+                Salary Slip
+              </a>
+
+              <a
+                href="{% url 'attendance_salary' payroll.id %}"
+                class="btn btn-sm btn-success"
+              >
+                Calculate Salary
+              </a>
+
+              <a
+                href="{% url 'payroll_delete' payroll.id %}"
+                class="btn btn-sm btn-danger"
+              >
+                Delete
+              </a>
+            </td>
+          </tr>
+
+          {% empty %}
+
+          <tr>
+            <td colspan="7" class="text-center empty-row">
+              No payroll records found.
+            </td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

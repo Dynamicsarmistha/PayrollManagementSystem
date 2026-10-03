@@ -1,0 +1,100 @@
+.salary-card {
+    margin-top: 25px;
+    background: white;
+    border-radius: 12px;
+    padding: 28px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    border: 1px solid #eeeeee;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.salary-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.salary-title {
+    font-size: 16px;
+    color: #6c757d;
+    margin-bottom: 8px;
+}
+
+.salary-amount {
+    font-size: 34px;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* =========================
+   NAVBAR
+   ========================= */
+
+.navbar {
+    background: #0d6efd;
+    color: white;
+    min-height: 64px;
+    padding: 0 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    box-sizing: border-box;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.navbar nav {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.navbar nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.navbar nav a:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================
+   MAIN CONTAINER
+   ========================= */
+
+.container {
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+
+/* =========================
+   RESPONSIVE NAVBAR
+   ========================= */
+
+@media (max-width: 600px) {
+
+    .navbar {
+        padding: 12px 15px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .navbar nav {
+        gap: 18px;
+    }
+
+    .logo {
+        font-size: 19px;
+    }
+
+}
