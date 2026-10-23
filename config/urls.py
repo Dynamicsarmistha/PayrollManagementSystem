@@ -18,9 +18,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from payroll.views import dashboard
+from accounts.views import PayrollLoginView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('login/', PayrollLoginView.as_view(), name='login'),
     path('', dashboard, name='dashboard'),
     path('employees/', include('employees.urls')),
     path('attendance/', include('attendance.urls')),
